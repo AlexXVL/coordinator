@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->morphs('model');
             $table->morphs('resource');
+            $table->integer('quantity')->nullable(false)->default(1);
             $table->dateTime('starts_at')->nullable();
             $table->dateTime('ends_at')->nullable();
             $table->dateTime('canceled_at')->nullable();

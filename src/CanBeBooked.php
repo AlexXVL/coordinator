@@ -7,6 +7,7 @@ use BinaryCats\Coordinator\Contracts\CanBookResources;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @mixin Model
@@ -36,7 +37,7 @@ trait CanBeBooked
     /**
      * True if the resource is available at a given argument.
      *
-     * @param  string|\DateTimeInterface|\Carbon\Carbon|\Spatie\Period\Period  $at
+     * @param  string|\DateTimeInterface|Carbon|\Spatie\Period\Period  $at
      * @param  bool  $includeCanceled
      * @return bool
      */
@@ -48,10 +49,30 @@ trait CanBeBooked
             ->isEmpty();
     }
 
+    public function isAvailableAtWithQuantity($at, $quantity = 1, $includeCanceled = false): bool
+    {
+        if (!isset($this->capacity)) {
+            return $this->isAvailableAt($at, $includeCanceled);
+        }
+
+        // Суммировать quantity всех пересекающихся бронирований
+        $bookedQuantity = $this->bookings()
+            ->where(function($query) use ($at) {
+                $query->where('starts_at', '<=', $at)
+                    ->where('ends_at', '>=', $at);
+            })
+            ->when(!$includeCanceled, function($query) {
+                $query->whereNull('canceled_at');
+            })
+            ->sum('quantity');
+
+        return ($this->capacity - $bookedQuantity) >= $quantity;
+    }
+
     /**
      * True if the resource is not available at a given argument.
      *
-     * @param  string|\DateTimeInterface|\Carbon\Carbon|\Spatie\Period\Period  $at
+     * @param  string|\DateTimeInterface|Carbon|\Spatie\Period\Period  $at
      * @param  bool  $includeCanceled
      * @return bool
      */
@@ -82,6 +103,17 @@ trait CanBeBooked
     public function createBookingFor(CanBookResources $model, $attributes = []): Booking
     {
         return tap($this->makeBookingFor($model, $attributes), fn ($model) => $model->save());
+    }
+
+    public function createBookingWithQuantity($model, $attributes = [], $quantity = 1): Booking
+    {
+        if (!$this->isAvailableAtWithQuantity($attributes['starts_at'], $quantity)) {
+            throw new \RuntimeException("Недостаточно доступных единиц");
+        }
+
+        $attributes['quantity'] = $quantity;
+
+        return $this->createBookingFor($model, $attributes);
     }
 
     /**

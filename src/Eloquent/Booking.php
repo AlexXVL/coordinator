@@ -6,13 +6,14 @@ use BinaryCats\Coordinator\Contracts\Booking as Contract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 /**
  * BinaryCats\Coordinator\Eloquent\Booking.
  *
- * @property \Carbon\Carbon|string $starts_at
- * @property \Carbon\Carbon|string $ends_at
- * @property \Carbon\Carbon|string $canceled_at
+ * @property Carbon|string $starts_at
+ * @property Carbon|string $ends_at
+ * @property Carbon|string $canceled_at
  */
 class Booking extends Model implements Contract
 {
@@ -31,6 +32,7 @@ class Booking extends Model implements Contract
         'starts_at',
         'ends_at',
         'canceled_at',
+        'quantity',
     ];
 
     /**
@@ -42,6 +44,7 @@ class Booking extends Model implements Contract
         'canceled_at' => 'datetime',
         'ends_at' => 'datetime',
         'starts_at' => 'datetime',
+        'quantity' => 'integer',
     ];
 
     /**
