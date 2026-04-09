@@ -62,5 +62,6 @@
                 "BinaryCats\\Coordinator\\CoordinatorServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
