@@ -29,10 +29,14 @@ class Booking extends Model implements Contract
      * @var string[]
      */
     protected $fillable = [
+        'model_type',
+        'model_id',
+        'resource_type',
+        'resource_id',
+        'quantity',
         'starts_at',
         'ends_at',
         'canceled_at',
-        'quantity',
     ];
 
     /**
