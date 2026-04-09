@@ -41,7 +41,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "AlexXVL\\Coordinator\\CoordinatorServiceProvider"
+                "BinaryCats\\Coordinator\\CoordinatorServiceProvider"
             ]
         }
     }
