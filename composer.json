@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "AlexXVL\\Coordinator\\": "src/"
+            "BinaryCats\\Coordinator\\": "src/"
         }
     },
     "autoload-dev": {
