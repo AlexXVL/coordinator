@@ -1,25 +1,15 @@
 {
-    "name": "binary-cats/coordinator",
+    "name": "alexxvl/coordinator",
     "description": "Schedule and manage resource booking (appointments) in your Laravel app",
     "keywords": [
         "appointment",
-        "binary-cats",
         "booking",
         "eloquent",
         "event",
         "laravel",
         "schedule"
     ],
-    "homepage": "https://github.com/binary-cats/coordinator",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Cyrill Kalita",
-            "email": "cyrill.kalita@gmail.com",
-            "homepage": "https://github.com/binary-cats",
-            "role": "Developer"
-        }
-    ],
     "require": {
         "php": "^8.0",
         "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
@@ -32,18 +22,13 @@
     },
     "autoload": {
         "psr-4": {
-            "BinaryCats\\Coordinator\\": "src/"
+            "AlexXVL\\Coordinator\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         }
-    },
-    "suggest": {
-        "binary-cats/laravel-sku": "Generate SKU in your Laravel models",
-        "binary-cats/laravel-lob-webhooks": "Handle lob.com webhooks in your Laravel application",
-        "binary-cats/laravel-mailgun-webhooks": "Handle Mailgun webhooks in your Laravel application"
     },
     "scripts": {
         "coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html coverage -d pcov.enabled",
@@ -54,14 +39,10 @@
         "sort-packages": true
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "9.x-dev"
-        },
         "laravel": {
             "providers": [
-                "BinaryCats\\Coordinator\\CoordinatorServiceProvider"
+                "AlexXVL\\Coordinator\\CoordinatorServiceProvider"
             ]
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
