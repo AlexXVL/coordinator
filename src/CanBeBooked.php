@@ -68,6 +68,18 @@ trait CanBeBooked
 
         return ($this->capacity - $bookedQuantity) >= $quantity;
     }
+    public function alreadyBookedAt($at, $includeCanceled = false): int
+    {
+        return $this->bookings()
+            ->where(function($query) use ($at) {
+                $query->where('starts_at', '<=', $at)
+                    ->where('ends_at', '>=', $at);
+            })
+            ->when(!$includeCanceled, function($query) {
+                $query->whereNull('canceled_at');
+            })
+            ->sum('quantity');
+    }
 
     /**
      * True if the resource is not available at a given argument.
