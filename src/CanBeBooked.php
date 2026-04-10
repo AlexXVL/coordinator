@@ -56,15 +56,7 @@ trait CanBeBooked
         }
 
         // Суммировать quantity всех пересекающихся бронирований
-        $bookedQuantity = $this->bookings()
-            ->where(function($query) use ($at) {
-                $query->where('starts_at', '<=', $at)
-                    ->where('ends_at', '>=', $at);
-            })
-            ->when(!$includeCanceled, function($query) {
-                $query->whereNull('canceled_at');
-            })
-            ->sum('quantity');
+        $bookedQuantity = $this->alreadyBookedAt($at, $includeCanceled);
 
         return ($this->capacity - $bookedQuantity) >= $quantity;
     }
@@ -72,8 +64,8 @@ trait CanBeBooked
     {
         return $this->bookings()
             ->where(function($query) use ($at) {
-                $query->where('starts_at', '<=', $at)
-                    ->where('ends_at', '>=', $at);
+                $query->where('starts_at', '<=', $at->start()->format('Y-m-d H:i:s'))
+                    ->where('ends_at', '>=', $at->end()->format('Y-m-d H:i:s'));
             })
             ->when(!$includeCanceled, function($query) {
                 $query->whereNull('canceled_at');
