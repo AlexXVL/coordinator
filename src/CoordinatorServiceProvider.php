@@ -2,36 +2,21 @@
 
 namespace BinaryCats\Coordinator;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class CoordinatorServiceProvider extends PackageServiceProvider
+class CoordinatorServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Configure Coordinator Package.
-     *
-     * @param  \Spatie\LaravelPackageTools\Package  $package
-     * @return void
-     */
-    public function configurePackage(Package $package): void
+    public function register()
     {
-        $package
-            ->name('coordinator')
-            ->hasConfigFile()
-            ->hasMigrations([
-                'create_bookings_table',
-                '2026_04_21_170300_alter_bookings_table_add_quantity_field',
-            ]);
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/coordinator.php',
+            'coordinator'
+        );
     }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return string[]
-     */
-    public function provides()
+    public function boot()
     {
-        return [
-        ];
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }
