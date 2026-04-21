@@ -3,9 +3,8 @@
 namespace BinaryCats\Coordinator;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Support\DeferrableProvider;
 
-class CoordinatorServiceProvider extends ServiceProvider implements DeferrableProvider
+class CoordinatorServiceProvider extends ServiceProvider
 {
     public function register()
     {
