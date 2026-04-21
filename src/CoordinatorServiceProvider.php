@@ -20,6 +20,7 @@ class CoordinatorServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasMigrations([
                 'create_bookings_table',
+                '2026_04_21 170300_alter_bookings_table_add_quantity_field',
             ]);
     }
 
