@@ -4,6 +4,7 @@ namespace BinaryCats\Coordinator;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 
 class CoordinatorServiceProvider extends PackageServiceProvider
 {
@@ -22,7 +23,12 @@ class CoordinatorServiceProvider extends PackageServiceProvider
                 'create_bookings_table',
                 '2026_04_21 170300_alter_bookings_table_add_quantity_field',
             ])
-            ->runsMigrations();
+            ->hasInstallCommand(function(InstallCommand $command) {
+                $command
+                    ->publishConfigFile()
+                    ->publishMigrations()
+                    ->askToRunMigrations();
+            });
     }
 
     /**
