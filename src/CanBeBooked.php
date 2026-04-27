@@ -43,6 +43,17 @@ trait CanBeBooked
      */
     public function isAvailableAt($at, $includeCanceled = false): bool
     {
+//        версия для работы с БД
+//        return $this->bookings()
+//            ->where(function($query) use ($at) {
+//                $query->where('starts_at', '<', $at->end()->format('Y-m-d H:i:s'))
+//                    ->where('ends_at', '>', $at->start()->format('Y-m-d H:i:s'));
+//            })
+//            ->when(!$includeCanceled, function($query) {
+//                $query->whereNull('starts_at');
+//            })->isEmpty();
+
+
         return $this->bookings
             ->filter(fn (Booking $booking) => $booking->isCurrent($at))
             ->reject(fn (Booking $booking) => $includeCanceled ? false : $booking->is_canceled)
